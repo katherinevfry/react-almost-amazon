@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
-import { addAuthor } from './helpers/data/AuthorData';
+import { Button } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { addAuthor, updateAuthor } from './helpers/data/AuthorData';
 
-export default function AuthorForm() {
+const AuthorForm = ({
+  setAuthors,
+  firebaseKey,
+  firstName,
+  lastName,
+  email,
+}) => {
   const [author, setAuthor] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: firstName || '',
+    lastName: lastName || '',
+    email: email || '',
+    firebaseKey: firebaseKey || null
   });
 
   const handleInputChange = (e) => {
@@ -17,8 +26,13 @@ export default function AuthorForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addAuthor(author);
+    if (author.firebaseKey) {
+      updateAuthor(author).then((authorsArray) => setAuthors(authorsArray));
+    } else {
+      addAuthor(author).then((authorArray) => setAuthors(authorArray));
+    }
   };
+
   return (
     <>
     <div className='author-form'>
@@ -35,7 +49,7 @@ export default function AuthorForm() {
         value={author.firstName}
         onChange={handleInputChange}
         ></input>
-
+        <br/>
         <label>Last Name: </label>
         <input
         name="lastName"
@@ -44,7 +58,7 @@ export default function AuthorForm() {
         value={author.lastName}
         onChange={handleInputChange}
         ></input>
-
+        <br/>
         <label>Email: </label>
         <input
         name="email"
@@ -53,9 +67,20 @@ export default function AuthorForm() {
         value={author.email}
         onChange={handleInputChange}
         ></input>
-        <button type='submit'>Submit</button>
+        <br/>
+        <Button color="success" type='submit'>Submit</Button>
       </form>
     </div>
     </>
   );
-}
+};
+
+AuthorForm.propTypes = {
+  setAuthors: PropTypes.func,
+  firebaseKey: PropTypes.string,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  email: PropTypes.string,
+};
+
+export default AuthorForm;
