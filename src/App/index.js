@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import './App.scss';
 import firebase from 'firebase';
 import firebaseConfig from '../helpers/apiKeys';
-import './App.scss';
-import AuthorForm from '../AuthorForm';
+import NavBar from '../components/NavBar';
 import { getAuthors } from '../helpers/data/AuthorData';
-import AuthorCard from '../components/AuthorCard';
+import Routes from '../helpers/Routes';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -16,23 +17,14 @@ function App() {
   }, []);
 
   return (
-    <div className='App'>
-      <AuthorForm
-       id="author-form"
-       setAuthors={setAuthors}/>
-       <div id="card-container">
-       {authors.map((authorInfo) => (
-        <AuthorCard
-          key={authorInfo.firebaseKey}
-          firebaseKey={authorInfo.firebaseKey}
-          firstName={authorInfo.firstName}
-          lastName={authorInfo.lastName}
-          email={authorInfo.email}
-          setAuthors={setAuthors}
-          />
-       ))}
-       </div>
-    </div>
+    <>
+    <Router>
+      <NavBar />
+      <Routes
+      authors={authors}
+      setAuthors={setAuthors} />
+    </Router>
+    </>
   );
 }
 
