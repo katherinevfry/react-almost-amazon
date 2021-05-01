@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Home from '../views/Home';
 import AddAuthors from '../views/AddAuthors';
 import Authors from '../views/Authors';
+import SingleAuthor from '../views/SingleAuthor';
 
 function Routes({ authors, setAuthors, user }) {
   return (
@@ -11,7 +12,8 @@ function Routes({ authors, setAuthors, user }) {
       <Switch>
         <Route exact path='/' component={() => <Home user={user}/>} />
         <Route path='/add-authors' component={() => (<AddAuthors setAuthors={setAuthors}/>)} />
-        <Route path='/authors' component={() => (<Authors authors={authors} setAuthors={setAuthors} />)} />
+        <Route exact path='/authors' component={() => (<Authors authors={authors} setAuthors={setAuthors} />)} />
+        <Route exact path='/author/:firebaseKey' component={SingleAuthor} />
       </Switch>
     </div>
   );
