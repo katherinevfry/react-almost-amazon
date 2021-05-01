@@ -5,11 +5,11 @@ import Home from '../views/Home';
 import AddAuthors from '../views/AddAuthors';
 import Authors from '../views/Authors';
 
-function Routes({ authors, setAuthors }) {
+function Routes({ authors, setAuthors, user }) {
   return (
     <div>
       <Switch>
-        <Route exact path='/' component={Home} />
+        <Route exact path='/' component={() => <Home user={user}/>} />
         <Route path='/add-authors' component={() => (<AddAuthors setAuthors={setAuthors}/>)} />
         <Route path='/authors' component={() => (<Authors authors={authors} setAuthors={setAuthors} />)} />
       </Switch>
@@ -19,7 +19,8 @@ function Routes({ authors, setAuthors }) {
 
 Routes.propTypes = {
   authors: PropTypes.array,
-  setAuthors: PropTypes.func
+  setAuthors: PropTypes.func,
+  user: PropTypes.any
 };
 
 export default Routes;
